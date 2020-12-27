@@ -16,12 +16,12 @@ using std::string;
 using std::vector;
 
 enum class FSM_States {KeepLane, FollowVehicle, PrepareLaneChangeLeft, PrepareLaneChangeRight, LaneChangeLeft, LaneChangeRight};
-static const char * StateStrings[] = {"Keep Land", "Follow Vehicle", "Prepare Lane Change Left", "Prepare Lane Change Right", "Lane Change Left", "Lane Change Right"};
+const char * StateStrings[] = {"Keep Land", "Follow Vehicle", "Prepare Lane Change Left", "Prepare Lane Change Right", "Lane Change Left", "Lane Change Right"};
 enum class FSM_Triggers {OpenRoad, VehicleAhead};
 
 using FiniteStateMachine = FSM::Fsm<FSM_States, FSM_States::KeepLane, FSM_Triggers>;
 
-void debug_func(FSM_States previousState, FSM_States nextState, FSM_Triggers trigger) {
+void debug_func(FSM_States previousState, FSM_States nextState, FSM_Triggers) {
   if (previousState != nextState) {
     std::cout << "State Transition: " << StateStrings[previousState] << " --> " << StateStrings[nextState] << std::endl;
   }
