@@ -79,9 +79,9 @@ int main() {
   // from state, to state, trigger, guard, action
   std::vector<FiniteStateMachine::Trans> transitions = {
     // keepToChangeLeft
-    {FSM_States::KeepLane, FSM_States::LaneChangeLeft, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !car_left && targetLane > LEFT_LANE_ID;} [&]{targetLane--;}},
+    {FSM_States::KeepLane, FSM_States::LaneChangeLeft, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !vehicleToLeft && targetLane > LEFT_LANE_ID;} [&]{targetLane--;}},
     // keepToChangeRight
-    {FSM_States::KeepLane, FSM_States::LaneChangeRight, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !car_right && targetLane > RIGHT_LANE_ID;}, [&]{targetLane++;}},
+    {FSM_States::KeepLane, FSM_States::LaneChangeRight, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !vehicleToRight && targetLane > RIGHT_LANE_ID;}, [&]{targetLane++;}},
     // keepToFollow
     {FSM_States::KeepLane, FSM_States::FollowVehicle, FSM_Triggers::VehicleAhead, [&]{return true;}, [&]{targetVelocity -= MAX_DECELERATION;}},
     // changeLeftToKeep
@@ -93,16 +93,16 @@ int main() {
     // changeRightToFollow
     {FSM_States::LaneChangeRight, FSM_States::FollowVehicle, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead;}, [&]{ targetVelocity -= MAX_DECELERATION;}},
     // followToChangeLeft
-    {FSM_States::FollowVehicle, FSM_States::LaneChangeLeft, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !car_left && targetLane > LEFT_LANE_ID;}, [&]{targetLane--;}},
+    {FSM_States::FollowVehicle, FSM_States::LaneChangeLeft, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !vehicleToLeft && targetLane > LEFT_LANE_ID;}, [&]{targetLane--;}},
     // followToChangeRight
-    {FSM_States::FollowVehicle, FSM_States::LaneChangeRight, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !car_right && targetLane != RIGHT_LANE_ID;}, [&]{targetLane++;}},
+    {FSM_States::FollowVehicle, FSM_States::LaneChangeRight, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !vehicleToRight && targetLane != RIGHT_LANE_ID;}, [&]{targetLane++;}},
     // followToFollow
     {FSM_States::FollowVehicle, FSM_States::FollowVehicle, FSM_Triggers::VehicleAhead, [&]{return true;}, [&]{targetVelocity -= MAX_DECELERATION;}},
     // followToKeep
     {FSM_States::FollowVehicle, FSM_States::KeepLane, FSM_Triggers::OpenRoad, [&]{return !vehicleAhead;}, [&]{targetVelocity += MAX_ACCELERATION;}},
     // keepToKeep
     {FSM_States::KeepLane, FSM_States::KeepLane, FSM_Triggers::OpenRoad, [&]{return !vehicleAhead;}, [&]{if (targetVelocity < MAX_VELOCITY) {targetVelocity += MAX_ACCELERATION;}}}
-  };
+  }
 
   FiniteStateMachine fsm;
   fsm.add_transitions(transitions);
