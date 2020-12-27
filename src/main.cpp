@@ -15,9 +15,9 @@ using nlohmann::json;
 using std::string;
 using std::vector;
 
-enum class FSM_States {KeepLane, FollowVehicle, PrepareLaneChangeLeft, PrepareLaneChangeRight, LaneChangeLeft, LaneChangeRight};
+enum FSM_States {KeepLane, FollowVehicle, PrepareLaneChangeLeft, PrepareLaneChangeRight, LaneChangeLeft, LaneChangeRight};
 const char * StateStrings[] = {"Keep Land", "Follow Vehicle", "Prepare Lane Change Left", "Prepare Lane Change Right", "Lane Change Left", "Lane Change Right"};
-enum class FSM_Triggers {OpenRoad, VehicleAhead};
+enum FSM_Triggers {OpenRoad, VehicleAhead};
 
 using FiniteStateMachine = FSM::Fsm<FSM_States, FSM_States::KeepLane, FSM_Triggers>;
 
