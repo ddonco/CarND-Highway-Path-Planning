@@ -93,17 +93,6 @@ int main() {
     map_waypoints_dy.push_back(d_y);
   }
 
-  // target lane
-  int targetLane = 1;
-  // target velocity
-  double targetVelocity = 0.0;
-  // vehicle is ahead
-  bool vehicleAhead = false;
-  // vehicle is to the left
-  bool vehicleToLeft = false;
-  // vehicle is to the right
-  bool vehicleToRight = false;
-
   FiniteStateMachine fsm;
   fsm.add_transitions(transitions);
   fsm.add_debug_fn(debug_func);
