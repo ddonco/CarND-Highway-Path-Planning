@@ -140,7 +140,7 @@ int main() {
           vector<double> next_x_vals;
           vector<double> next_y_vals;
 
-          int previousPathSize = previous_path_x.size()
+          int previousPathSize = previous_path_x.size();
           if (previousPathSize > 0) {
             car_s = end_path_s;
           }
@@ -155,20 +155,20 @@ int main() {
             int occupiedLane = INVALID_LANE_ID;
 
             if ( d > 0 && d < LEFT_LANE_MAX ) {
-                other_car_lane = LEFT_LANE;
+                occupiedLane = LEFT_LANE_ID;
             }
             if ( d > LEFT_LANE_MAX && d < MIDDLE_LANE_MAX ) {
-                other_car_lane = MIDDLE_LANE;
+                occupiedLane = MIDDLE_LANE_ID;
             }
             if ( d > MIDDLE_LANE_MAX && d < RIGHT_LANE_MAX ) {
-                other_car_lane = RIGHT_LANE;
+                occupiedLane = RIGHT_LANE_ID;
             }
-            if (other_car_lane == INVALID_LANE) {
+            if (occupiedLane == INVALID_LANE_ID) {
                 continue;
             }
 
-            double vehicleX = sensor_fusion[i][3];
-            double vehicleY = sensor_fusion[i][4];
+            double vx = sensor_fusion[i][3];
+            double vy = sensor_fusion[i][4];
             double vehicleV = sqrt(vx * vx + vy * vy);
             double vehicleS = sensor_fusion[i][5];
 
@@ -194,7 +194,7 @@ int main() {
 
           // ########## Trajectory Logic ##########
           vector<double> trajectoryX;
-          vecotr<double> trajectoryY;
+          vector<double> trajectoryY;
 
           double targetX = car_x;
           double targetY = car_y;
