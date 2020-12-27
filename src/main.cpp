@@ -19,9 +19,9 @@ enum class FSM_States {KeepLane, FollowVehicle, PrepareLaneChangeLeft, PrepareLa
 static const char * StateStrings[] = {"Keep Land", "Follow Vehicle", "Prepare Lane Change Left", "Prepare Lane Change Right", "Lane Change Left", "Lane Change Right"};
 enum class FSM_Triggers {OpenRoad, VehicleAhead};
 
-using FiniteStateMachine = FSM::Fsm<FSM_States, FSM_States::KeepLane, FSM_Triggers> 
+using FiniteStateMachine = FSM::Fsm<FSM_States, FSM_States::KeepLane, FSM_Triggers>;
 
-void debug_fsm(FSM_States previousState, FSM_States nextState, FSM_Triggers trigger) {
+void debug_func(FSM_States previousState, FSM_States nextState, FSM_Triggers trigger) {
   if (previousState != nextState) {
     std::cout << "State Transition: " << StateStrings[previousState] << " --> " << StateStrings[nextState] << std::endl;
   }
@@ -106,7 +106,7 @@ int main() {
 
   FiniteStateMachine fsm;
   fsm.add_transitions(transitions);
-  fsm.add_debug_fn(debug_fsm);
+  fsm.add_debug_fn(debug_func);
 
   h.onMessage([&map_waypoints_x,&map_waypoints_y,&map_waypoints_s,
                &map_waypoints_dx,&map_waypoints_dy]
