@@ -23,7 +23,7 @@ using FiniteStateMachine = FSM::Fsm<FSM_States, FSM_States::KeepLane, FSM_Trigge
 
 // transitions format:
 // from state, to state, trigger, guard, action
-std::vector<F::Trans> transitions = {
+std::vector<FiniteStateMachine::Trans> transitions = {
   // keepToChangeLeft
   {FSM_States::KeepLane, FSM_States::LaneChangeLeft, FSM_Triggers::VehicleAhead, [&]{return car_ahead && !car_left && targetLane > LEFT_LANE_ID;} [&]{targetLane--;}},
   // keepToChangeRight
