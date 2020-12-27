@@ -20,6 +20,7 @@ static const char * StateStrings[] = {"Keep Land", "Follow Vehicle", "Prepare La
 enum FSM_Triggers {OpenRoad, VehicleAhead};
 
 using FiniteStateMachine = FSM::Fsm<FSM_States, FSM_States::KeepLane, FSM_Triggers>;
+FiniteStateMachine fsm;
 
 // transitions format:
 // from state, to state, trigger, guard, action
@@ -93,7 +94,6 @@ int main() {
     map_waypoints_dy.push_back(d_y);
   }
 
-  FiniteStateMachine fsm;
   fsm.add_transitions(transitions);
   fsm.add_debug_fn(debug_func);
 
