@@ -25,13 +25,13 @@ using FiniteStateMachine = FSM::Fsm<FSM_States, FSM_States::KeepLane, FSM_Trigge
 // from state, to state, trigger, guard, action
 std::vector<FiniteStateMachine::Trans> transitions = {
   // keepToChangeLeft
-  {FSM_States::KeepLane, FSM_States::LaneChangeLeft, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !vehicleToLeft && targetLane > LEFT_LANE_ID;} [&]{targetLane--;}},
+  {FSM_States::KeepLane, FSM_States::LaneChangeLeft, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !vehicleToLeft && targetLane > LEFT_LANE_ID;}, [&]{targetLane--;}},
   // keepToChangeRight
   {FSM_States::KeepLane, FSM_States::LaneChangeRight, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !vehicleToRight && targetLane > RIGHT_LANE_ID;}, [&]{targetLane++;}},
   // keepToFollow
   {FSM_States::KeepLane, FSM_States::FollowVehicle, FSM_Triggers::VehicleAhead, [&]{return true;}, [&]{targetVelocity -= MAX_DECELERATION;}},
   // changeLeftToKeep
-  {FSM_States::LaneChangeLeft, FSM_States::KeepLane, FSM_Triggers::OpenRoad, [&]{return !vehicleAhead;} , [&]{}},
+  {FSM_States::LaneChangeLeft, FSM_States::KeepLane, FSM_Triggers::OpenRoad, [&]{return !vehicleAhead;}, [&]{}},
   // changeLeftToFollow
   {FSM_States::LaneChangeLeft, FSM_States::FollowVehicle, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead;}, [&]{ targetVelocity -= MAX_DECELERATION;}},
   // changeRightToKeep
