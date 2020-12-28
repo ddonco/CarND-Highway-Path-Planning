@@ -28,7 +28,7 @@ std::vector<FiniteStateMachine::Trans> transitions = {
   // keepToChangeLeft
   {FSM_States::KeepLane, FSM_States::LaneChangeLeft, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !vehicleToLeft && targetLane > LEFT_LANE_ID;}, [&]{targetLane--;}},
   // keepToChangeRight
-  {FSM_States::KeepLane, FSM_States::LaneChangeRight, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !vehicleToRight && targetLane > RIGHT_LANE_ID;}, [&]{targetLane++;}},
+  {FSM_States::KeepLane, FSM_States::LaneChangeRight, FSM_Triggers::VehicleAhead, [&]{return vehicleAhead && !vehicleToRight && targetLane != RIGHT_LANE_ID;}, [&]{targetLane++;}},
   // keepToFollow
   {FSM_States::KeepLane, FSM_States::FollowVehicle, FSM_Triggers::VehicleAhead, [&]{return true;}, [&]{targetVelocity -= MAX_DECELERATION;}},
   // changeLeftToKeep
@@ -186,7 +186,7 @@ int main() {
           }
 
           // ########## Behavior Logic ##########
-          if (vehicleToRight) {
+          if (vehicleAhead) {
             fsm.execute(FSM_Triggers::VehicleAhead);
           } else {
             fsm.execute(FSM_Triggers::OpenRoad);
@@ -235,7 +235,7 @@ int main() {
 
           for (int i = 0; i < trajectoryX.size(); i++) {
             trajectoryX[i] = ((trajectoryX[i] - targetX) * cos(0 - targetYaw) - (trajectoryY[i] - targetY) * sin(0 - targetYaw));
-            trajectoryY[i] = ((trajectoryX[i] - targetX) * sin(0 - targetYaw) - (trajectoryY[i] - targetY) * cos(0 - targetYaw));
+            trajectoryY[i] = ((trajectoryX[i] - targetX) * sin(0 - targetYaw) + (trajectoryY[i] - targetY) * cos(0 - targetYaw));
           }
 
           // create a trajectory spline
@@ -265,8 +265,11 @@ int main() {
             x = x + splineX / n;
             y = s(x);
 
-            x += x * cos(targetYaw) - y * sin(targetYaw);
-            y += x * sin(targetYaw) + y * cos(targetYaw);
+            x = x * cos(targetYaw) - y * sin(targetYaw);
+            y = x * sin(targetYaw) + y * cos(targetYaw);
+
+            x += targetX;
+            y += targetY;
 
             next_x_vals.push_back(x);
             next_y_vals.push_back(y);
