@@ -19,7 +19,7 @@ const int INVALID_LANE_ID = -1;
 const int LEFT_LANE_MAX = 4;
 const int MIDDLE_LANE_MAX = 8;
 const int RIGHT_LANE_MAX = 12;
-const int PROJECTION_IN_METERS = 30;
+const int BUFFER_DISTANCE = 20;
 
 // Checks if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,

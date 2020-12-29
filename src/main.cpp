@@ -27,7 +27,7 @@ bool vehicleToLeft = false;
 bool vehicleToRight = false;
 
 enum FSM_States {KeepLane, FollowVehicle, PrepareLaneChangeLeft, PrepareLaneChangeRight, LaneChangeLeft, LaneChangeRight};
-static const char * StateStrings[] = {"Keep Land", "Follow Vehicle", "Prepare Lane Change Left", "Prepare Lane Change Right", "Lane Change Left", "Lane Change Right"};
+static const char * StateStrings[] = {"Keep Lane", "Follow Vehicle", "Prepare Lane Change Left", "Prepare Lane Change Right", "Lane Change Left", "Lane Change Right"};
 enum FSM_Triggers {OpenRoad, VehicleAhead};
 
 using FiniteStateMachine = FSM::Fsm<FSM_States, FSM_States::KeepLane, FSM_Triggers>;
@@ -178,21 +178,21 @@ int main() {
                 continue;
             }
 
-            double vx = sensor_fusion[i][3];
-            double vy = sensor_fusion[i][4];
-            double vehicleV = sqrt((vx * vx) + (vy * vy));
-            double vehicleS = sensor_fusion[i][5];
+            double trackedVehicleVX = sensor_fusion[i][3];
+            double trackedVehicleVY = sensor_fusion[i][4];
+            double trackedVehicleV = sqrt((trackedVehicleVX * trackedVehicleVX) + (trackedVehicleVY * trackedVehicleVY));
+            double trackedVehicleS = sensor_fusion[i][5];
 
-            vehicleS += previousPathSize * 0.02 * vehicleV;
+            trackedVehicleS += previousPathSize * 0.02 * trackedVehicleV;
 
             if (occupiedLane == targetLane) {
-              vehicleAhead |= vehicleS > car_s && vehicleS - car_s < PROJECTION_IN_METERS;
+              vehicleAhead |= trackedVehicleS > car_s && trackedVehicleS - car_s < BUFFER_DISTANCE;
             }
             if (occupiedLane - targetLane == -1) {
-              vehicleToLeft |= car_s - PROJECTION_IN_METERS < vehicleS && car_s  + PROJECTION_IN_METERS > vehicleS;
+              vehicleToLeft |= car_s - BUFFER_DISTANCE < trackedVehicleS && car_s  + BUFFER_DISTANCE > trackedVehicleS;
             }
             if (occupiedLane - targetLane == 1) {
-              vehicleToRight |= car_s - PROJECTION_IN_METERS < vehicleS && car_s + PROJECTION_IN_METERS > vehicleS;
+              vehicleToRight |= car_s - BUFFER_DISTANCE < trackedVehicleS && car_s + BUFFER_DISTANCE > trackedVehicleS;
             }
           }
 
@@ -233,22 +233,22 @@ int main() {
             trajectoryY.push_back(targetY);
           }
 
-          vector<double> nextWaypoint0 = getXY(car_s + PROJECTION_IN_METERS, (2 + 4 * targetLane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
-          vector<double> nextWaypoint1 = getXY(car_s + (PROJECTION_IN_METERS * 2), (2 + 4 * targetLane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
-          vector<double> nextWaypoint2 = getXY(car_s + (PROJECTION_IN_METERS * 3), (2 + 4 * targetLane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
+          vector<double> nextWaypoint = getXY(car_s + BUFFER_DISTANCE, (2 + 4 * targetLane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
+          vector<double> nextWaypoint_1 = getXY(car_s + (BUFFER_DISTANCE * 2), (2 + 4 * targetLane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
+          vector<double> nextWaypoint_2 = getXY(car_s + (BUFFER_DISTANCE * 3), (2 + 4 * targetLane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
 
-          trajectoryX.push_back(nextWaypoint0[0]);
-          trajectoryX.push_back(nextWaypoint1[0]);
-          trajectoryX.push_back(nextWaypoint2[0]);
-          trajectoryY.push_back(nextWaypoint0[1]);
-          trajectoryY.push_back(nextWaypoint1[1]);
-          trajectoryY.push_back(nextWaypoint2[1]);
+          trajectoryX.push_back(nextWaypoint[0]);
+          trajectoryX.push_back(nextWaypoint_1[0]);
+          trajectoryX.push_back(nextWaypoint_2[0]);
+          trajectoryY.push_back(nextWaypoint[1]);
+          trajectoryY.push_back(nextWaypoint_1[1]);
+          trajectoryY.push_back(nextWaypoint_2[1]);
 
           for (int i = 0; i < trajectoryX.size(); i++) {
             double xOffset = trajectoryX[i] - targetX;
             double yOffset = trajectoryY[i] - targetY;
-            trajectoryX[i] = (xOffset * cos(0 - targetYaw)) - (yOffset * sin(0 - targetYaw));
-            trajectoryY[i] = (xOffset * sin(0 - targetYaw)) + (yOffset * cos(0 - targetYaw));
+            trajectoryX[i] = ((trajectoryX[i] - targetX) * cos(0 - targetYaw)) - ((trajectoryY[i] - targetY) * sin(0 - targetYaw));
+            trajectoryY[i] = ((trajectoryX[i] - targetX) * sin(0 - targetYaw)) + ((trajectoryY[i] - targetY) * cos(0 - targetYaw));
           }
 
           // create a trajectory spline
