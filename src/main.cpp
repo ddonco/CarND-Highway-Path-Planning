@@ -168,10 +168,10 @@ int main() {
             if ( d > 0 && d < LEFT_LANE_MAX ) {
                 occupiedLane = LEFT_LANE_ID;
             }
-            else if ( d > LEFT_LANE_MAX && d < MIDDLE_LANE_MAX ) {
+            if ( d > LEFT_LANE_MAX && d < MIDDLE_LANE_MAX ) {
                 occupiedLane = MIDDLE_LANE_ID;
             }
-            else if ( d > MIDDLE_LANE_MAX && d < RIGHT_LANE_MAX ) {
+            if ( d > MIDDLE_LANE_MAX && d < RIGHT_LANE_MAX ) {
                 occupiedLane = RIGHT_LANE_ID;
             }
             if (occupiedLane == INVALID_LANE_ID) {
@@ -188,10 +188,10 @@ int main() {
             if (occupiedLane == targetLane) {
               vehicleAhead |= vehicleS > car_s && vehicleS - car_s < PROJECTION_IN_METERS;
             }
-            else if (occupiedLane - targetLane == -1) {
+            if (occupiedLane - targetLane == -1) {
               vehicleToLeft |= car_s - PROJECTION_IN_METERS < vehicleS && car_s  + PROJECTION_IN_METERS > vehicleS;
             }
-            else if (occupiedLane - targetLane == 1) {
+            if (occupiedLane - targetLane == 1) {
               vehicleToRight |= car_s - PROJECTION_IN_METERS < vehicleS && car_s + PROJECTION_IN_METERS > vehicleS;
             }
           }
@@ -270,7 +270,7 @@ int main() {
             if (targetVelocity > MAX_VELOCITY) {
               targetVelocity = MAX_VELOCITY;
             }
-            else if (targetVelocity < MAX_ACCELERATION) {
+            if (targetVelocity < MAX_ACCELERATION) {
               targetVelocity = MAX_ACCELERATION;
             }
 
@@ -292,8 +292,6 @@ int main() {
             next_x_vals.push_back(x_point);
             next_y_vals.push_back(y_point);
           }
-
-          std::cout << "target yaw: " << targetYaw << std::endl;
 
           msgJson["next_x"] = next_x_vals;
           msgJson["next_y"] = next_y_vals;
