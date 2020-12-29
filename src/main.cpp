@@ -268,6 +268,7 @@ int main() {
 
           // double x_add_on = 0;
           double calcX, calcY = 0.0;
+          double tempX = 0.0;
           for (int i = 0; i < 50 - previous_path_x.size(); i++) {
             if (targetVelocity > MAX_VELOCITY) {
               targetVelocity = MAX_VELOCITY;
@@ -279,10 +280,11 @@ int main() {
             double n = (splineDistance / (0.02 * targetVelocity / 2.24));
             // double x_point = x_add_on + splineX / n;
             // double y_point = s(x_point);
-            calcX = calcX + splineX / n;
+            calcX = tempX + splineX / n;
             calcY = s(calcX);
 
             // x_add_on = x_point;
+            tempX = calcX;
 
             // double x_ref = x_point;
             // double y_ref = y_point;
