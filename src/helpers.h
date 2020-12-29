@@ -21,6 +21,17 @@ const int MIDDLE_LANE_MAX = 8;
 const int RIGHT_LANE_MAX = 12;
 const int BUFFER_DISTANCE = 30;
 
+// target lane
+int targetLane = 1;
+// target velocity
+double targetVelocity = 0.0;
+// vehicle is ahead
+bool vehicleAhead = false;
+// vehicle is to the left
+bool vehicleToLeft = false;
+// vehicle is to the right
+bool vehicleToRight = false;
+
 // Checks if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,
 //   else the empty string "" will be returned.
