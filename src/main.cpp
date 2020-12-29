@@ -240,9 +240,9 @@ int main() {
           trajectoryX.push_back(nextWaypoint0[0]);
           trajectoryX.push_back(nextWaypoint1[0]);
           trajectoryX.push_back(nextWaypoint2[0]);
-          trajectoryY.push_back(nextWaypoint0[0]);
-          trajectoryY.push_back(nextWaypoint1[0]);
-          trajectoryY.push_back(nextWaypoint2[0]);
+          trajectoryY.push_back(nextWaypoint0[1]);
+          trajectoryY.push_back(nextWaypoint1[1]);
+          trajectoryY.push_back(nextWaypoint2[1]);
 
           for (int i = 0; i < trajectoryX.size(); i++) {
             double xOffset = trajectoryX[i] - targetX;
