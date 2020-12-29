@@ -15,7 +15,16 @@ using nlohmann::json;
 using std::string;
 using std::vector;
 
-
+// target lane
+int targetLane = 1;
+// target velocity
+double targetVelocity = 0.0;
+// vehicle is ahead
+bool vehicleAhead = false;
+// vehicle is to the left
+bool vehicleToLeft = false;
+// vehicle is to the right
+bool vehicleToRight = false;
 
 enum FSM_States {KeepLane, FollowVehicle, PrepareLaneChangeLeft, PrepareLaneChangeRight, LaneChangeLeft, LaneChangeRight};
 static const char * StateStrings[] = {"Keep Lane", "Follow Vehicle", "Prepare Lane Change Left", "Prepare Lane Change Right", "Lane Change Left", "Lane Change Right"};
@@ -189,6 +198,7 @@ int main() {
 
           // ########## Behavior Logic ##########
           if (vehicleAhead) {
+            std::cout << "Vehicle ahead." << std::endl;
             fsm.execute(FSM_Triggers::VehicleAhead);
           } else {
             fsm.execute(FSM_Triggers::OpenRoad);
