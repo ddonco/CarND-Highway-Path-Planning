@@ -288,13 +288,13 @@ int main() {
 
             // double x_ref = x_point;
             // double y_ref = y_point;
-            double x_ref = calcX;
-            double y_ref = calcY;
+            // double x_ref = calcX;
+            // double y_ref = calcY;
 
             // x_point = (x_ref * cos(targetYaw)) - (y_ref * sin(targetYaw));
             // y_point = (x_ref * sin(targetYaw)) + (y_ref * cos(targetYaw));
-            calcX = (x_ref * cos(targetYaw)) - (y_ref * sin(targetYaw));
-            calcY = (x_ref * sin(targetYaw)) + (y_ref * cos(targetYaw));
+            calcX = (calcX * cos(targetYaw)) - (calcY * sin(targetYaw));
+            calcY = (calcX * sin(targetYaw)) + (calcY * cos(targetYaw));
 
             // x_point += targetX;
             // y_point += targetY;
