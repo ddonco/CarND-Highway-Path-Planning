@@ -234,8 +234,10 @@ int main() {
           trajectoryY.push_back(nextWaypoint2[0]);
 
           for (int i = 0; i < trajectoryX.size(); i++) {
-            trajectoryX[i] = ((trajectoryX[i] - targetX) * cos(0 - targetYaw) - (trajectoryY[i] - targetY) * sin(0 - targetYaw));
-            trajectoryY[i] = ((trajectoryX[i] - targetX) * sin(0 - targetYaw) + (trajectoryY[i] - targetY) * cos(0 - targetYaw));
+            double xOffset = trajectoryX[i] - targetX;
+            double yOffset = trajectoryY[i] - targetY;
+            trajectoryX[i] = (xOffset * cos(0 - targetYaw) - yOffset * sin(0 - targetYaw));
+            trajectoryY[i] = (xOffset * sin(0 - targetYaw) + yOffset * cos(0 - targetYaw));
           }
 
           // create a trajectory spline
@@ -252,7 +254,7 @@ int main() {
           double splineY = s(splineX);
           double splineDistance = sqrt(splineX * splineX + splineY * splineY);
 
-          double x, y = 0.0;
+          double x_add_on = 0;
           for (int i = 0; i < 50 - previous_path_x.size(); i++) {
             if (targetVelocity > MAX_VELOCITY) {
               targetVelocity = MAX_VELOCITY;
@@ -262,17 +264,22 @@ int main() {
             }
 
             double n = (splineDistance / (0.02 * targetVelocity / 2.24));
-            x = x + splineX / n;
-            y = s(x);
+            double x_point = x_add_on + splineX / n;
+            double y_point = s(x_point);
 
-            x = x * cos(targetYaw) - y * sin(targetYaw);
-            y = x * sin(targetYaw) + y * cos(targetYaw);
+            x_add_on = x_point;
 
-            x += targetX;
-            y += targetY;
+            double x_ref = x_point;
+            double y_ref = y_point;
 
-            next_x_vals.push_back(x);
-            next_y_vals.push_back(y);
+            x_point = x_ref * cos(targetYaw) - y_ref * sin(targetYaw);
+            y_point = x_ref * sin(targetYaw) + y_ref * cos(targetYaw);
+
+            x_point += targetX;
+            y_point += targetY;
+
+            next_x_vals.push_back(x_point);
+            next_y_vals.push_back(y_point);
           }
 
           msgJson["next_x"] = next_x_vals;
