@@ -278,8 +278,8 @@ int main() {
             double n = (splineDistance / (0.02 * targetVelocity / 2.24));
             double x_point = x_add_on + splineX / n;
             double y_point = s(x_point);
-            calcX = calcX + splineX / n;
-            calcY = s(calcX);
+            // calcX = calcX + splineX / n;
+            // calcY = s(calcX);
 
             x_add_on = x_point;
 
