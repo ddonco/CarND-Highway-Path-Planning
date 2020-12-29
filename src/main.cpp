@@ -248,8 +248,8 @@ int main() {
           for (int i = 0; i < trajectoryX.size(); i++) {
             double xOffset = trajectoryX[i] - targetX;
             double yOffset = trajectoryY[i] - targetY;
-            trajectoryX[i] = ((trajectoryX[i] - targetX) * cos(0 - targetYaw)) - ((trajectoryY[i] - targetY) * sin(0 - targetYaw));
-            trajectoryY[i] = ((trajectoryX[i] - targetX) * sin(0 - targetYaw)) + ((trajectoryY[i] - targetY) * cos(0 - targetYaw));
+            trajectoryX[i] = (xOffset * cos(0 - targetYaw)) - (yOffset * sin(0 - targetYaw));
+            trajectoryY[i] = (xOffset * sin(0 - targetYaw)) + (yOffset * cos(0 - targetYaw));
           }
 
           // create a trajectory spline
