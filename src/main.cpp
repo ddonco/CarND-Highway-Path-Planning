@@ -266,7 +266,7 @@ int main() {
           double splineDistance = sqrt((splineX * splineX) + (splineY * splineY));
 
           double x_add_on = 0;
-          double calcX, calcY = 0.0;
+          // double calcX, calcY = 0.0;
           for (int i = 0; i < 50 - previous_path_x.size(); i++) {
             if (targetVelocity > MAX_VELOCITY) {
               targetVelocity = MAX_VELOCITY;
