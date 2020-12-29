@@ -266,6 +266,7 @@ int main() {
           double splineDistance = sqrt((splineX * splineX) + (splineY * splineY));
 
           double x_add_on = 0;
+          double x, y = 0.0;
           for (int i = 0; i < 50 - previous_path_x.size(); i++) {
             if (targetVelocity > MAX_VELOCITY) {
               targetVelocity = MAX_VELOCITY;
@@ -277,20 +278,30 @@ int main() {
             double n = (splineDistance / (0.02 * targetVelocity / 2.24));
             double x_point = x_add_on + splineX / n;
             double y_point = s(x_point);
+            x = x + splineX / n;
+            y = s(x);
 
             x_add_on = x_point;
 
             double x_ref = x_point;
             double y_ref = y_point;
+            // double x_ref = x;
+            // double y_ref = y;
 
             x_point = (x_ref * cos(targetYaw)) - (y_ref * sin(targetYaw));
             y_point = (x_ref * sin(targetYaw)) + (y_ref * cos(targetYaw));
+            // x = (x_ref * cos(targetYaw)) - (y_ref * sin(targetYaw));
+            // y = (x_ref * sin(targetYaw)) + (y_ref * cos(targetYaw));
 
             x_point += targetX;
             y_point += targetY;
+            // x += targetX;
+            // y += targetY;
 
             next_x_vals.push_back(x_point);
             next_y_vals.push_back(y_point);
+            // next_x_vals.push_back(x);
+            // next_y_vals.push_back(y);
           }
 
           msgJson["next_x"] = next_x_vals;
