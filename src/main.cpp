@@ -157,10 +157,10 @@ int main() {
             if ( d > 0 && d < LEFT_LANE_MAX ) {
                 occupiedLane = LEFT_LANE_ID;
             }
-            if ( d > LEFT_LANE_MAX && d < MIDDLE_LANE_MAX ) {
+            else if ( d > LEFT_LANE_MAX && d < MIDDLE_LANE_MAX ) {
                 occupiedLane = MIDDLE_LANE_ID;
             }
-            if ( d > MIDDLE_LANE_MAX && d < RIGHT_LANE_MAX ) {
+            else if ( d > MIDDLE_LANE_MAX && d < RIGHT_LANE_MAX ) {
                 occupiedLane = RIGHT_LANE_ID;
             }
             if (occupiedLane == INVALID_LANE_ID) {
@@ -177,10 +177,10 @@ int main() {
             if (occupiedLane == targetLane) {
               vehicleAhead |= vehicleS > car_s && vehicleS - car_s < PROJECTION_IN_METERS;
             }
-            if (occupiedLane - targetLane == -1) {
+            else if (occupiedLane - targetLane == -1) {
               vehicleToLeft |= car_s - PROJECTION_IN_METERS < vehicleS && car_s  + PROJECTION_IN_METERS > vehicleS;
             }
-            if (occupiedLane - targetLane == 1) {
+            else if (occupiedLane - targetLane == 1) {
               vehicleToRight |= car_s - PROJECTION_IN_METERS < vehicleS && car_s + PROJECTION_IN_METERS > vehicleS;
             }
           }
@@ -257,7 +257,7 @@ int main() {
             if (targetVelocity > MAX_VELOCITY) {
               targetVelocity = MAX_VELOCITY;
             }
-            if (targetVelocity < MAX_ACCELERATION) {
+            else if (targetVelocity < MAX_ACCELERATION) {
               targetVelocity = MAX_ACCELERATION;
             }
 
