@@ -10,8 +10,8 @@ using std::string;
 using std::vector;
 
 const double MAX_VELOCITY = 49.5;
-const double MAX_ACCELERATION = .224;
-const double MAX_DECELERATION = .448;
+const double MAX_ACCELERATION = 0.224;
+const double MAX_DECELERATION = 0.448;
 const int LEFT_LANE_ID = 0;
 const int MIDDLE_LANE_ID = 1;
 const int RIGHT_LANE_ID = 2;
@@ -20,17 +20,6 @@ const int LEFT_LANE_MAX = 4;
 const int MIDDLE_LANE_MAX = 8;
 const int RIGHT_LANE_MAX = 12;
 const int PROJECTION_IN_METERS = 30;
-
-// target lane
-int targetLane = 1;
-// target velocity
-double targetVelocity = 0.0;
-// vehicle is ahead
-bool vehicleAhead = false;
-// vehicle is to the left
-bool vehicleToLeft = false;
-// vehicle is to the right
-bool vehicleToRight = false;
 
 // Checks if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,

@@ -15,6 +15,17 @@ using nlohmann::json;
 using std::string;
 using std::vector;
 
+// target lane
+int targetLane = 1;
+// target velocity
+double targetVelocity = 0.0;
+// vehicle is ahead
+bool vehicleAhead = false;
+// vehicle is to the left
+bool vehicleToLeft = false;
+// vehicle is to the right
+bool vehicleToRight = false;
+
 enum FSM_States {KeepLane, FollowVehicle, PrepareLaneChangeLeft, PrepareLaneChangeRight, LaneChangeLeft, LaneChangeRight};
 static const char * StateStrings[] = {"Keep Land", "Follow Vehicle", "Prepare Lane Change Left", "Prepare Lane Change Right", "Lane Change Left", "Lane Change Right"};
 enum FSM_Triggers {OpenRoad, VehicleAhead};
@@ -145,7 +156,7 @@ int main() {
             car_s = end_path_s;
           }
 
-          // Prediction Logic
+          // ########## Prediction Logic ##########
           vehicleAhead = false;
           vehicleToLeft = false;
           vehicleToRight = false;
@@ -169,7 +180,7 @@ int main() {
 
             double vx = sensor_fusion[i][3];
             double vy = sensor_fusion[i][4];
-            double vehicleV = sqrt(vx * vx + vy * vy);
+            double vehicleV = sqrt((vx * vx) + (vy * vy));
             double vehicleS = sensor_fusion[i][5];
 
             vehicleS += previousPathSize * 0.02 * vehicleV;
@@ -236,8 +247,8 @@ int main() {
           for (int i = 0; i < trajectoryX.size(); i++) {
             double xOffset = trajectoryX[i] - targetX;
             double yOffset = trajectoryY[i] - targetY;
-            trajectoryX[i] = (xOffset * cos(0 - targetYaw) - yOffset * sin(0 - targetYaw));
-            trajectoryY[i] = (xOffset * sin(0 - targetYaw) + yOffset * cos(0 - targetYaw));
+            trajectoryX[i] = (xOffset * cos(0 - targetYaw)) - (yOffset * sin(0 - targetYaw));
+            trajectoryY[i] = (xOffset * sin(0 - targetYaw)) + (yOffset * cos(0 - targetYaw));
           }
 
           // create a trajectory spline
@@ -252,7 +263,7 @@ int main() {
 
           double splineX = 30.0;
           double splineY = s(splineX);
-          double splineDistance = sqrt(splineX * splineX + splineY * splineY);
+          double splineDistance = sqrt((splineX * splineX) + (splineY * splineY));
 
           double x_add_on = 0;
           for (int i = 0; i < 50 - previous_path_x.size(); i++) {
@@ -272,8 +283,8 @@ int main() {
             double x_ref = x_point;
             double y_ref = y_point;
 
-            x_point = x_ref * cos(targetYaw) - y_ref * sin(targetYaw);
-            y_point = x_ref * sin(targetYaw) + y_ref * cos(targetYaw);
+            x_point = (x_ref * cos(targetYaw)) - (y_ref * sin(targetYaw));
+            y_point = (x_ref * sin(targetYaw)) + (y_ref * cos(targetYaw));
 
             x_point += targetX;
             y_point += targetY;
@@ -281,6 +292,8 @@ int main() {
             next_x_vals.push_back(x_point);
             next_y_vals.push_back(y_point);
           }
+
+          std::cout << "target yaw: " << targetYaw << std::endl;
 
           msgJson["next_x"] = next_x_vals;
           msgJson["next_y"] = next_y_vals;
