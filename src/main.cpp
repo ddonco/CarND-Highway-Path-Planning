@@ -268,7 +268,8 @@ int main() {
 
           // double x_add_on = 0;
           double calcX, calcY = 0.0;
-          double tempX = 0.0;
+          double prevX = 0.0;
+          double tempX, tempY = 0.0;
           for (int i = 0; i < 50 - previous_path_x.size(); i++) {
             if (targetVelocity > MAX_VELOCITY) {
               targetVelocity = MAX_VELOCITY;
@@ -284,17 +285,17 @@ int main() {
             calcY = s(calcX);
 
             // x_add_on = x_point;
-            tempX = calcX;
+            prevX = calcX;
 
             // double x_ref = x_point;
             // double y_ref = y_point;
-            // double x_ref = calcX;
-            // double y_ref = calcY;
+            tempX = calcX;
+            tempY = calcY;
 
             // x_point = (x_ref * cos(targetYaw)) - (y_ref * sin(targetYaw));
             // y_point = (x_ref * sin(targetYaw)) + (y_ref * cos(targetYaw));
-            calcX = (calcX * cos(targetYaw)) - (calcY * sin(targetYaw));
-            calcY = (calcX * sin(targetYaw)) + (calcY * cos(targetYaw));
+            calcX = (tempX * cos(targetYaw)) - (tempY * sin(targetYaw));
+            calcY = (tempX * sin(targetYaw)) + (tempY * cos(targetYaw));
 
             // x_point += targetX;
             // y_point += targetY;
