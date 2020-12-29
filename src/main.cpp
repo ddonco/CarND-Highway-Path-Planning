@@ -266,8 +266,8 @@ int main() {
           double splineY = s(splineX);
           double splineDistance = sqrt((splineX * splineX) + (splineY * splineY));
 
-          double x_add_on = 0;
-          // double calcX, calcY = 0.0;
+          // double x_add_on = 0;
+          double calcX, calcY = 0.0;
           for (int i = 0; i < 50 - previous_path_x.size(); i++) {
             if (targetVelocity > MAX_VELOCITY) {
               targetVelocity = MAX_VELOCITY;
@@ -277,32 +277,32 @@ int main() {
             }
 
             double n = (splineDistance / (0.02 * targetVelocity / 2.24));
-            double x_point = x_add_on + splineX / n;
-            double y_point = s(x_point);
-            // calcX = calcX + splineX / n;
-            // calcY = s(calcX);
+            // double x_point = x_add_on + splineX / n;
+            // double y_point = s(x_point);
+            calcX = calcX + splineX / n;
+            calcY = s(calcX);
 
-            x_add_on = x_point;
+            // x_add_on = x_point;
 
-            double x_ref = x_point;
-            double y_ref = y_point;
-            // double x_ref = calcX;
-            // double y_ref = calcY;
+            // double x_ref = x_point;
+            // double y_ref = y_point;
+            double x_ref = calcX;
+            double y_ref = calcY;
 
-            x_point = (x_ref * cos(targetYaw)) - (y_ref * sin(targetYaw));
-            y_point = (x_ref * sin(targetYaw)) + (y_ref * cos(targetYaw));
-            // calcX = (x_ref * cos(targetYaw)) - (y_ref * sin(targetYaw));
-            // calcY = (x_ref * sin(targetYaw)) + (y_ref * cos(targetYaw));
+            // x_point = (x_ref * cos(targetYaw)) - (y_ref * sin(targetYaw));
+            // y_point = (x_ref * sin(targetYaw)) + (y_ref * cos(targetYaw));
+            calcX = (x_ref * cos(targetYaw)) - (y_ref * sin(targetYaw));
+            calcY = (x_ref * sin(targetYaw)) + (y_ref * cos(targetYaw));
 
-            x_point += targetX;
-            y_point += targetY;
-            // calcX += targetX;
-            // calcY += targetY;
+            // x_point += targetX;
+            // y_point += targetY;
+            calcX += targetX;
+            calcY += targetY;
 
-            next_x_vals.push_back(x_point);
-            next_y_vals.push_back(y_point);
-            // next_x_vals.push_back(calcX);
-            // next_y_vals.push_back(calcY);
+            // next_x_vals.push_back(x_point);
+            // next_y_vals.push_back(y_point);
+            next_x_vals.push_back(calcX);
+            next_y_vals.push_back(calcY);
           }
 
           msgJson["next_x"] = next_x_vals;

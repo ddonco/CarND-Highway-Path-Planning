@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "cmath": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "vector": "cpp"
     }
 }
