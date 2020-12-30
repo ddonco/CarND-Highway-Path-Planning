@@ -156,15 +156,18 @@ int main() {
             car_s = end_path_s;
           }
 
-          // ########## Prediction Logic ##########
+          // ########## Vehicle Location Prediction ##########
           vehicleAhead = false;
           vehicleToLeft = false;
           vehicleToRight = false;
 
+          // loop over detected vehicles and determine which, if any, lane is occupied
+          // and if the vehicle is ahead, to the left, or to the right
           for (int i = 0; i < sensor_fusion.size(); i++) {
             float d = sensor_fusion[i][6];
             int occupiedLane = INVALID_LANE_ID;
 
+            // determine if a lane is occupied
             if ( d > 0 && d < LEFT_LANE_MAX ) {
                 occupiedLane = LEFT_LANE_ID;
             }
@@ -183,8 +186,8 @@ int main() {
             double trackedVehicleV = sqrt((trackedVehicleVX * trackedVehicleVX) + (trackedVehicleVY * trackedVehicleVY));
             double trackedVehicleS = sensor_fusion[i][5];
 
+            // if lane is occupied, determine if the vehicle is ahead, on the left, or on the right
             trackedVehicleS += previousPathSize * 0.02 * trackedVehicleV;
-
             if (occupiedLane == targetLane) {
               vehicleAhead |= trackedVehicleS > car_s && trackedVehicleS - car_s < BUFFER_DISTANCE;
             }
@@ -196,15 +199,17 @@ int main() {
             }
           }
 
-          // ########## Behavior Logic ##########
+          // ########## Driving Behavior Planning ##########
+          // If vehicle is ahead, trigger finite state machine to determine appropriate
+          // state change based on current conditions. If the road ahead is open, no
+          // action is needed and current lane should be maintained
           if (vehicleAhead) {
-            std::cout << "Vehicle ahead." << std::endl;
             fsm.execute(FSM_Triggers::VehicleAhead);
           } else {
             fsm.execute(FSM_Triggers::OpenRoad);
           }
 
-          // ########## Trajectory Logic ##########
+          // ########## Calculate Trajectory ##########
           vector<double> trajectoryX;
           vector<double> trajectoryY;
 
@@ -234,16 +239,16 @@ int main() {
             trajectoryY.push_back(targetY);
           }
 
-          vector<double> nextWaypoint = getXY(car_s + BUFFER_DISTANCE, (2 + 4 * targetLane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
-          vector<double> nextWaypoint_1 = getXY(car_s + (BUFFER_DISTANCE * 2), (2 + 4 * targetLane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
-          vector<double> nextWaypoint_2 = getXY(car_s + (BUFFER_DISTANCE * 3), (2 + 4 * targetLane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
+          vector<double> nextWaypoint0 = getXY(car_s + BUFFER_DISTANCE, (2 + 4 * targetLane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
+          vector<double> nextWaypoint1 = getXY(car_s + (BUFFER_DISTANCE * 2), (2 + 4 * targetLane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
+          vector<double> nextWaypoint2 = getXY(car_s + (BUFFER_DISTANCE * 3), (2 + 4 * targetLane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
 
-          trajectoryX.push_back(nextWaypoint[0]);
-          trajectoryX.push_back(nextWaypoint_1[0]);
-          trajectoryX.push_back(nextWaypoint_2[0]);
-          trajectoryY.push_back(nextWaypoint[1]);
-          trajectoryY.push_back(nextWaypoint_1[1]);
-          trajectoryY.push_back(nextWaypoint_2[1]);
+          trajectoryX.push_back(nextWaypoint0[0]);
+          trajectoryX.push_back(nextWaypoint1[0]);
+          trajectoryX.push_back(nextWaypoint2[0]);
+          trajectoryY.push_back(nextWaypoint0[1]);
+          trajectoryY.push_back(nextWaypoint1[1]);
+          trajectoryY.push_back(nextWaypoint2[1]);
 
           for (int i = 0; i < trajectoryX.size(); i++) {
             double xOffset = trajectoryX[i] - targetX;
@@ -252,7 +257,7 @@ int main() {
             trajectoryY[i] = (xOffset * sin(0 - targetYaw)) + (yOffset * cos(0 - targetYaw));
           }
 
-          // create a trajectory spline
+          // create a smooth spline from the trajectory points
           tk::spline s;
 
           s.set_points(trajectoryX, trajectoryY);

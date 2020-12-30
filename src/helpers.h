@@ -9,6 +9,7 @@
 using std::string;
 using std::vector;
 
+// Constants that define driving limits
 const double MAX_VELOCITY = 49.9;
 const double MAX_ACCELERATION = 0.224;
 const double MAX_DECELERATION = 0.448;
