@@ -1,13 +1,22 @@
 # Highway Planning Project
 Self-Driving Car Engineer Nanodegree Program
 
+[//]: # (Image References)
+
+[screenshot1]: ./images/Screenshot_1.png "Simulator Screenshor 1"
+[screenshot2]: ./images/Screenshot_2.png "Simulator Screenshor 2"
+
 ### Goals
+
+![alt text][screenshot1]
 
 The goal of this project is to safely navigate a car around a virtual highway with other traffic that is driving +-10 MPH of the 50 MPH speed limit. The simulated highway environment provides the car's localization and sensor fusion data, there is also a sparse map list of waypoints around the highway. The car will try to go as close as possible to the 50 MPH speed limit, which means it will pass slower traffic when possible. The car will avoid hitting other cars and will drive inside the marked road lanes at all times, unless going from one lane to another. The car will be able to make one complete loop around the 6946m highway. The car has been programmed to not experience a total acceleration over 10 m/s^2 or a jerk that's greater than 10 m/s^3.
 
 ### Reflection
 
 This project employs open source code for the spline generation ([found here](https://kluge.in-chemnitz.de/opensource/spline/)) and a finite state machine template ([found here](https://github.com/eglimi/cppfsm)). Additionally, several path planning concepts including planning a vehicle trajectory, lane changing, and implementing a spline have been taken from the project Q&A video. The path planning logic of this project can be broken into three sections: Vehicle Location Prediction, Driving Behavior Planning, and Calculate Trajectory.
+
+![alt text][screenshot2]
 
 #### 1. Vehicle Location Prediction
 
