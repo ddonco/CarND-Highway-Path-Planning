@@ -30,6 +30,8 @@ Found in `main.cpp` starting at line 206. This section triggers the finite state
 
 Found in `main.cpp` starting at line 212. This section builds a spline from the point at the front of the car to several point ahead of the car at 30, 60, and 90 m distances. The spline provides a smooth trajectory for the car to follow and prevent uncomfortable accelerations and jerks. Once the car begins moving, the spline is built using two points from the previous trajectory plus the three points in the distance. The target waypoints for the car are calculated in the car's (x, y) coordinate system then transformed into the maps coordinate system to simplify the trajectory calculations.
 
+## Project Data
+
 #### The map of the highway is in data/highway_map.txt
 
 Each waypoint in the list contains  [x,y,s,dx,dy] values. x and y are the waypoint's map coordinate position, the s value is the distance along the road to get to that waypoint in meters, the dx and dy values define the unit normal vector pointing outward of the highway loop.
@@ -85,7 +87,7 @@ To run the simulator on Mac/Linux, first make the binary file executable with th
 sudo chmod u+x {simulator_file_name}
 ```
 
-## Basic Build Instructions
+### Basic Build Instructions
 
 1. Clone this repo.
 2. Make a build directory: `mkdir build && cd build`
@@ -94,7 +96,7 @@ sudo chmod u+x {simulator_file_name}
 
 Here is the data provided from the Simulator to the C++ Program
 
-## Dependencies
+### Dependencies
 
 * cmake >= 3.5
   * All OSes: [click here for installation instructions](https://cmake.org/install/)
